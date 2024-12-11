@@ -1,25 +1,32 @@
 package com.RealTimeTicketingSystem.demo.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.RealTimeTicketingSystem.demo.model.ActivityLog;
-import java.util.List;
-import java.util.ArrayList;
+import com.RealTimeTicketingSystem.demo.websocket.ActivityLogWebSocketHandler;
 
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/logs")
 public class LogController {
+
+    @Autowired
+    private ActivityLogWebSocketHandler webSocketHandler;
+
+    // Endpoint to get logs
     @GetMapping("/get")
     public String getLogs() {
         return "Logs";
     }
+
+    // Example implementation for fetching activity logs
+    @GetMapping
     public ResponseEntity<List<ActivityLog>> getActivityLogs() {
-        // Implement the logic to fetch the activity logs
+        // Fetch activity logs (this is a placeholder implementation)
         List<ActivityLog> logs = new ArrayList<>();
-        // Add log entries to the logs list
         ActivityLog log1 = new ActivityLog();
         log1.setMessage("Log 1");
         logs.add(log1);
@@ -30,4 +37,13 @@ public class LogController {
         return ResponseEntity.ok(logs);
     }
 
+    // Endpoint to add logs and broadcast via WebSocket
+    @PostMapping
+    public void addLog(@RequestBody String logMessage) {
+        // Log the message to the console (you can extend this to save it in a database)
+        System.out.println("Received log: " + logMessage);
+
+        // Broadcast the log to WebSocket clients
+        webSocketHandler.sendLogUpdate(logMessage);
+    }
 }
