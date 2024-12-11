@@ -26,4 +26,15 @@ public class SystemConfigurationController {
                 ? ResponseEntity.ok(config)
                 : ResponseEntity.notFound().build();
     }
+    @PostMapping("/start")
+    public ResponseEntity<Void> startSystem() {
+        configService.startSystem();
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/stop")
+    public ResponseEntity<Void> stopSystem() {
+        configService.stopSystem();
+        return ResponseEntity.ok().build();
+    }
 }

@@ -45,4 +45,19 @@ public class SystemConfigurationService {
         dto.setTicketRetrievalRate(config.getTicketRetrievalRate());
         return dto;
     }
+    @Transactional
+    public void startSystem() {
+        SystemConfiguration config = configRepository.findTopByOrderByIdDesc();
+        if (config == null) {
+            config = new SystemConfiguration();
+            config.setMaxTicketCapacity(100);
+            config.setTotalTicketCapacity(100);
+            config.setTicketReleaseRate(10);
+            config.setTicketRetrievalRate(10);
+        }
+    }
+    @Transactional
+    public void stopSystem() {
+        configRepository.deleteAll();
+    }
 }
