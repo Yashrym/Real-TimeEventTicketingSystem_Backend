@@ -13,7 +13,7 @@ public class SystemConfigurationController {
     @Autowired
     private SystemConfigurationService configService;
 
-    @PostMapping("/save")
+    @PutMapping("/save")
     public ResponseEntity<ConfigurationDto> saveConfiguration(
             @Valid @RequestBody ConfigurationDto configDto) {
         return ResponseEntity.ok(configService.saveConfiguration(configDto));
